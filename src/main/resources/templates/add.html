@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>Перпод.ру</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+<header th:insert="header :: header"></header>
+<div class="container mt-auto">
+    <form action="/add" method="post">
+        <div class="form-group">
+            <label for="inputFirstName"></label>
+            <input type="text" class="form-control" id="inputFirstName" name="firstName" placeholder="Имя">
+            <label for="inputMiddleName"></label>
+            <input type="text" class="form-control" id="inputMiddleName" name="middleName" placeholder="Отчество">
+            <label for="inputLastName"></label>
+            <input type="text" class="form-control" id="inputLastName" name="lastName" placeholder="Фамилия">
+        </div>
+        <button type="submit" class="btn btn-primary">Создать</button>
+    </form>
+</div>
+</body>
+</html>
