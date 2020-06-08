@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head th:fragment="head">
+<head>
     <title>Перпод.ру</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -8,23 +8,19 @@
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 <body>
-<div th:fragment="header">
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-        <h5 class="my-0 mr-md-auto font-weight-normal">Перпод.ру</h5>
-        <nav class="my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-dark" href="/rules">Правила</a>
-        </nav>
-        <a class="btn btn-outline-primary" href="/">Домой</a>
-    </div>
-</div>
-<section class="jumbotron text-center" th:fragment="face">
+<header th:insert="blocks/header"></header>
+<section class="jumbotron text-center">
     <div class="container">
         <h1>
             <span th:text="${teacher.lastName + ' ' + teacher.firstName + ' ' + teacher.middleName+ ' '}"></span>
-            <span th:if="${rating<1 || rating > 5}" th:text="${rating}" class="badge badge-info"></span>
-            <span th:if="${rating>=1 && rating <3}" th:text="${rating}" class="badge badge-danger"></span>
-            <span th:if="${rating>=3 && rating <4}" th:text="${rating}" class="badge badge-warning"></span>
-            <span th:if="${rating>=4 && rating <=5}" th:text="${rating}" class="badge badge-success"></span>
+            <span th:if="${mean<1 || mean> 5}" th:text="${mean}"
+                  class="badge badge-info"></span>
+            <span th:if="${mean>=1 && mean <3}" th:text="${mean}"
+                  class="badge badge-danger"></span>
+            <span th:if="${mean>=3 && mean <4}" th:text="${mean}"
+                  class="badge badge-warning"></span>
+            <span th:if="${mean>=4 && mean <=5}" th:text="${mean}"
+                  class="badge badge-success"></span>
         </h1>
         <h3 th:each="temp: ${teacher.employers}">
             <span th:text="${temp.name + ' ('+temp.city+')'}" class="badge badge-secondary"></span>
@@ -67,13 +63,13 @@
                             <div class="col-10"><p th:text="${r.text}" class="card-text"></p></div>
                             <div class="col pl-0 text-center">
                                 <h1>
-                                    <span th:if="${r.mark.ordinal()<1 || r.mark.ordinal() > 5}"
+                                    <span th:if="${r.mark.ordinal()<0 || r.mark.ordinal() > 4}"
                                           th:text="${r.mark.ordinal() + 1}" class="badge badge-info"></span>
-                                    <span th:if="${r.mark.ordinal()>=1 && r.mark.ordinal() <3}"
+                                    <span th:if="${r.mark.ordinal()>=0 && r.mark.ordinal() <2}"
                                           th:text="${r.mark.ordinal() + 1}" class="badge badge-danger"></span>
-                                    <span th:if="${r.mark.ordinal()>=3 && r.mark.ordinal() <4}"
+                                    <span th:if="${r.mark.ordinal()>=2 && r.mark.ordinal() <3}"
                                           th:text="${r.mark.ordinal() + 1}" class="badge badge-warning"></span>
-                                    <span th:if="${r.mark.ordinal()>=4 && r.mark.ordinal() <=5}"
+                                    <span th:if="${r.mark.ordinal()>=3 && r.mark.ordinal() <=4}"
                                           th:text="${r.mark.ordinal() + 1}" class="badge badge-success"></span>
                                 </h1>
                             </div>
@@ -85,7 +81,32 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <nav th:unless="${pageNumbers.isEmpty()}" aria-label="Navigation" class="mx-auto">
+                <ul class="pagination">
+                    <li th:class="${current <= 1} ? 'page-item disabled': 'page-item'">
+                        <a class="page-link" th:href="'/teacher/' + ${teacher.id} + '?pageNum=' + ${current - 1}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <div th:each="pageNumber : ${pageNumbers}">
+                        <li th:class="${current == pageNumber} ? 'page-item active': 'page-item'">
+                            <a class="page-link" th:text="${pageNumber}"
+                               th:href="'/teacher/' + ${teacher.id} + '?pageNum=' + ${pageNumber}"></a>
+                        </li>
+                    </div>
+                    <li th:class="${current >= pageNumbers.size()} ? 'page-item disabled': 'page-item'">
+                        <a class="page-link" th:href="'/teacher/' + ${teacher.id} + '?pageNum=' + ${current + 1}"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
+</div>
 </div>
 </body>
 </html>

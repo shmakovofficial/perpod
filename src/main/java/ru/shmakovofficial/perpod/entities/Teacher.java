@@ -37,6 +37,9 @@ public class Teacher {
     private Integer reviewsCount = 0;
 
     @NonNull
+    private Float reviewsMean = .0F;
+
+    @NonNull
     @ManyToMany
     private Set<Employer> employers = new HashSet<>();
 

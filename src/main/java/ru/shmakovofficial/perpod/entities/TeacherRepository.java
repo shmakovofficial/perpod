@@ -1,15 +1,11 @@
 package ru.shmakovofficial.perpod.entities;
 
-import lombok.NonNull;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.Optional;
 
-public interface TeacherRepository extends CrudRepository<Teacher, Long> {
+public interface TeacherRepository extends PagingAndSortingRepository<Teacher, Long> {
 
-    public Iterable<Teacher> findByApprovedTrue();
-
-    public Optional<Teacher> findByIdAndApprovedTrue(@NonNull Long id);
-
-    public Iterable<Teacher> findByEmployersContains(@NonNull Employer id);
+    Page<Teacher> findAllByEmployersContainingAndApprovedTrue(Employer e, Pageable p);
 }

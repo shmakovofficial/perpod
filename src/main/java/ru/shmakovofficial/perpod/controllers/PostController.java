@@ -58,8 +58,13 @@ public class PostController {
         r.setText(text);
         r.setReviewDate(new Date());
         teacher.getReviews().add(r);
-        t.get().setReviewsCount(t.get().getReviewsCount() + 1);
+        teacher.setReviewsMean(nextMean(teacher.getReviewsMean(), teacher.getReviewsCount(), mark));
+        teacher.setReviewsCount(teacher.getReviewsCount() + 1);
         reviewRepository.save(r);
         return "redirect:/success";
+    }
+
+    private static float nextMean(float previousMean, int previousCount, int nextValue) {
+        return (previousMean * previousCount + nextValue) / (previousCount + 1);
     }
 }

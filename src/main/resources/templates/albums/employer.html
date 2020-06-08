@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>Перпод.ру</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+<header th:insert="blocks/header"></header>
+<section th:fragment="front" class="jumbotron text-center">
+    <div class="container">
+        <h1 th:text="${employer.name} + ' (' + ${employer.city} + ')'"></h1>
+    </div>
+</section>
+<div class="album pb-5 bg-white">
+    <div class="container">
+        <form class="needs-validation" th:action="${'/employer/'+ employer.id +'/add'}" method="post">
+            <h3 class="mb-3">Форма добавления нового преподавателя</h3>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="lastName">Фамилия</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Иванов" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="firstName">Имя</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Иван" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="middleName">Отчество</label>
+                    <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Иванович">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="imageUrl">Фото</label>
+                    <input type="url" class="form-control" id="imageUrl" name="imageUrl" required placeholder="URL">
+                </div>
+            </div>
+            <button id="addButton" type="submit" class="btn btn-primary btn-lg btn-block">Добавить</button>
+            <hr class="mb-4">
+        </form>
+        <div class="row">
+            <div th:each="teacher: ${teachers}" class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <img style="object-fit:cover" width="100%" height="225" class="bd-placeholder-img card-img-top"
+                             th:src="${teacher.imageUrl}"/>
+                        <div class="card-body">
+                            <p th:text="${teacher.lastName} + ' ' + ${teacher.firstName} + ' ' + ${teacher.middleName}"
+                               class="card-text"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-outline-primary" th:href="'/teacher/' + ${teacher.id}"
+                                       role="button">Читать</a>
+                                </div>
+                                <small th:text="'Отзывов: ' + ${teacher.reviews.size()}" class="text-muted"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <nav th:unless="${pageNumbers.isEmpty()}" aria-label="Navigation" class="mx-auto">
+                <ul class="pagination">
+                    <li th:class="${current <= 1} ? 'page-item disabled': 'page-item'">
+                        <a class="page-link" th:href="'/employer/' + ${employer.id} + '?pageNum=' + ${current - 1}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <div th:each="pageNumber : ${pageNumbers}">
+                        <li th:class="${current == pageNumber} ? 'page-item active': 'page-item'">
+                            <a class="page-link" th:text="${pageNumber}"
+                               th:href="'/employer/' + ${employer.id} + '?pageNum=' + ${pageNumber}"></a>
+                        </li>
+                    </div>
+                    <li th:class="${current >= pageNumbers.size()} ? 'page-item disabled': 'page-item'">
+                        <a class="page-link" th:href="'/employer/' + ${employer.id} + '?pageNum=' + ${current + 1}"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
