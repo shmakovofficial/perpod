@@ -1,57 +1,46 @@
 package ru.shmakovofficial.perpod.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.*;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Teacher {
 
+    @NonNull
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NonNull
     private String firstName;
+
+    @NonNull
     private String middleName;
+
+    @NonNull
     private String lastName;
 
-    public Teacher() {
-    }
+    @NonNull
+    private Boolean approved = false;
 
-    public Teacher(String firstName, String middleName, String lastName) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-    }
+    @NonNull
+    private String imageUrl;
 
-    @Override
-    public String toString() {
-        return String.format(
-                "Customer[id=%d, firstName='%s', middleName='%s', lastName='%s']",
-                id, firstName, middleName, lastName);
-    }
+    @NonNull
+    private Integer reviewsCount = 0;
 
-    public String getFirstName() {
-        return firstName;
-    }
+    @NonNull
+    @ManyToMany
+    private Set<Employer> employers = new HashSet<>();
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    @NonNull
+    @OneToMany
+    private Set<Review> reviews = new HashSet<>();
 }

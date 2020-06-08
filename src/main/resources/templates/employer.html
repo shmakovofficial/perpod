@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:fragment="head">
+    <title>Перпод.ру</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+<div th:fragment="header">
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+        <h5 class="my-0 mr-md-auto font-weight-normal">Перпод.ру</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="/rules">Правила</a>
+        </nav>
+        <a class="btn btn-outline-primary" href="/">Домой</a>
+    </div>
+</div>
+<section th:fragment="front" class="jumbotron text-center">
+    <div class="container">
+        <h1 th:text="${employer.name} + ' (' + ${employer.city} + ')'"></h1>
+    </div>
+</section>
+<div class="album pb-5 bg-white">
+    <div class="container">
+        <form class="needs-validation" th:action="${'/employer/'+employer.id+'/add'}" method="post">
+            <h3 class="mb-3">Форма добавления нового преподавателя</h3>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="lastName">Фамилия</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName"placeholder="Иванов" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="firstName">Имя</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName"placeholder="Иван" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="middleName">Отчество</label>
+                    <input type="text" class="form-control" id="middleName" name="middleName"placeholder="Иванович">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="imageUrl">Фото</label>
+                    <input type="url" class="form-control" id="imageUrl" name="imageUrl"required placeholder="URL">
+                </div>
+            </div>
+            <button id="addButton" type="submit" class="btn btn-primary btn-lg btn-block">Добавить</button>
+            <hr class="mb-4">
+        </form>
+        <div class="row">
+            <div th:each="t: ${teachers}" class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <img style="object-fit:cover" width="100%" height="225" class="bd-placeholder-img card-img-top"
+                             th:src="${t.imageUrl}"/>
+                        <div class="card-body">
+                            <p th:text="${t.lastName} + ' ' + ${t.firstName} + ' ' + ${t.middleName}"
+                               class="card-text"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-outline-primary" th:href="'/teacher/' + ${t.id}"
+                                       role="button">Читать</a>
+                                </div>
+                                <small th:text="'Отзывов: ' + ${t.reviews.size()}" class="text-muted"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

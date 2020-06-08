@@ -1,0 +1,6 @@
+package ru.shmakovofficial.perpod.entities;
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface ReviewRepository extends CrudRepository<Review, Long> {
+}
