@@ -21,6 +21,18 @@ public class PostController {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @PostMapping("/add")
+    public String addEmployer(
+            String city,
+            String name
+    ) {
+        Employer e = new Employer();
+        e.setName(name);
+        e.setCity(city);
+        employerRepository.save(e);
+        return "redirect:/success";
+    }
+
     @PostMapping("/employer/{id}/add")
     public String addTeacher(
             String firstName,

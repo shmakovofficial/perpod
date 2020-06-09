@@ -24,6 +24,9 @@ public class Employer {
     @NonNull
     private String city;
 
+    @NonNull
+    private Boolean approved = false;
+
     @ManyToMany(mappedBy = "employers")
     private Set<Teacher> teachers = new HashSet<>();
 }

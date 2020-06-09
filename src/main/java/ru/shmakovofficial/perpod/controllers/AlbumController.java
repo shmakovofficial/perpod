@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.shmakovofficial.perpod.entities.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -30,7 +31,7 @@ public class AlbumController {
     @GetMapping("/")
     public String getEmployers(Model model, @RequestParam(required = false) Integer pageNum) {
         if (pageNum == null) pageNum = 1;
-        Page<Employer> page = employerRepository.findAll(PageRequest.of(pageNum - 1, 9));
+        Page<Employer> page = employerRepository.findAllByApprovedTrue(PageRequest.of(pageNum - 1, 9));
         model.addAttribute("employers", page.getContent());
         model.addAttribute("current", pageNum);
         model.addAttribute("pageNumbers", IntStream.range(1, page.getTotalPages() + 1).boxed().collect(Collectors.toList()));
@@ -41,9 +42,9 @@ public class AlbumController {
     public String getTeachers(Model model, @NonNull @PathVariable Long id, @RequestParam(required = false) Integer pageNum) {
         Employer employer = employerRepository.findById(id).orElse(null);
         if (employer == null) return "redirect:/";
-        model.addAttribute("employer", employer);
         if (pageNum == null) pageNum = 1;
         Page<Teacher> page = teacherRepository.findAllByEmployersContainingAndApprovedTrue(employer, PageRequest.of(pageNum - 1, 9));
+        model.addAttribute("employer", employer);
         model.addAttribute("teachers", page.getContent());
         model.addAttribute("current", pageNum);
         model.addAttribute("pageNumbers", IntStream.range(1, page.getTotalPages() + 1).boxed().collect(Collectors.toList()));
@@ -55,12 +56,26 @@ public class AlbumController {
         Teacher teacher = teacherRepository.findById(id).orElse(null);
         if (teacher == null) return "redirect:/";
         if (pageNum == null) pageNum = 1;
+        Page<Review> page = reviewRepository.findAllByTeacherAndApprovedTrue(teacher, PageRequest.of(pageNum - 1, 9));
+        List<Review> reviews = page.getContent();
+        List<String> badges = reviews
+                .stream()
+                .map(Review::getMark)
+                .map(Enum::ordinal)
+                .map(AlbumController::incr)
+                .map(AlbumController::badgeClass)
+                .collect(Collectors.toList());
+        List<Integer> pageNumbers = IntStream
+                .range(1, page.getTotalPages() + 1)
+                .boxed()
+                .collect(Collectors.toList());
         model.addAttribute("teacher", teacher);
         model.addAttribute("mean", round(teacher.getReviewsMean()));
-        Page<Review> page = reviewRepository.findAllByTeacherAndApprovedTrue(teacher, PageRequest.of(pageNum - 1, 9));
-        model.addAttribute("reviews", page.getContent());
+        model.addAttribute("badge", badgeClass(teacher.getReviewsMean()));
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("badges", badges);
         model.addAttribute("current", pageNum);
-        model.addAttribute("pageNumbers", IntStream.range(1, page.getTotalPages() + 1).boxed().collect(Collectors.toList()));
+        model.addAttribute("pageNumbers", pageNumbers);
         return "albums/teacher";
     }
 
@@ -70,5 +85,22 @@ public class AlbumController {
             pow *= 10;
         float tmp = number * pow;
         return ((float) ((int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp))) / pow;
+    }
+
+
+    private static String badgeClass(float mark) {
+        if (mark < 1 || mark > 5) {
+            return "badge badge-info";
+        } else if (mark < 3) {
+            return "badge badge-danger";
+        } else if (mark == 3) {
+            return "badge badge-warning";
+        } else {
+            return "badge badge-success";
+        }
+    }
+
+    private static int incr(int value) {
+        return value + 1;
     }
 }
