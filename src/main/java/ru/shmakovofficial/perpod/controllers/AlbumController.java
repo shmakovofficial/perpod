@@ -32,6 +32,11 @@ public class AlbumController {
     public String getEmployers(Model model, @RequestParam(required = false) Integer pageNum) {
         if (pageNum == null) pageNum = 1;
         Page<Employer> page = employerRepository.findAllByApprovedTrue(PageRequest.of(pageNum - 1, 9));
+        List<SelectReturn> selects = employerRepository.findAllByApprovedTrue()
+                .stream()
+                .map(SelectReturn::new)
+                .collect(Collectors.toList());
+        model.addAttribute("selects", selects);
         model.addAttribute("employers", page.getContent());
         model.addAttribute("current", pageNum);
         model.addAttribute("pageNumbers", IntStream.range(1, page.getTotalPages() + 1).boxed().collect(Collectors.toList()));
@@ -44,6 +49,11 @@ public class AlbumController {
         if (employer == null) return "redirect:/";
         if (pageNum == null) pageNum = 1;
         Page<Teacher> page = teacherRepository.findAllByEmployersContainingAndApprovedTrue(employer, PageRequest.of(pageNum - 1, 9));
+        List<SelectReturn> selects = teacherRepository.findAllByEmployersContainingAndApprovedTrue(employer)
+                .stream()
+                .map(SelectReturn::new)
+                .collect(Collectors.toList());
+        model.addAttribute("selects", selects);
         model.addAttribute("employer", employer);
         model.addAttribute("teachers", page.getContent());
         model.addAttribute("current", pageNum);
