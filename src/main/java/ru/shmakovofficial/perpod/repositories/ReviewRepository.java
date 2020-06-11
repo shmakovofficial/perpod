@@ -1,13 +1,14 @@
-package ru.shmakovofficial.perpod.entities;
+package ru.shmakovofficial.perpod.repositories;
 
-import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import ru.shmakovofficial.perpod.entities.Review;
+import ru.shmakovofficial.perpod.entities.Teacher;
 
 
 public interface ReviewRepository extends PagingAndSortingRepository<Review, Long> {
 
-    Page<Review> findAllByTeacherAndApprovedTrue(@NonNull Teacher t, Pageable p);
+    Page<Review> findAllByTeacherAndApprovedTrueOrderByReviewDateDesc(Teacher t, Pageable p);
 
 }

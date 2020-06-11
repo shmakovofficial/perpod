@@ -34,6 +34,6 @@ public class Review {
     private Teacher teacher;
 
     @NonNull
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date reviewDate;
 }

@@ -15,7 +15,7 @@
         <div class="card mb-3">
             <select onchange="this.options[this.selectedIndex].value && (window.location = '/employer/' + this.options[this.selectedIndex].value);"
                     class="js-example-basic-single" name="simple_select" id="simple_select">
-                <option value="-1">Вводите название ВУЗа</option>
+                <option value="-1">Поиск ВУЗа</option>
                 <div th:each="sel: ${selects}">
                     <option th:onclick="" th:value="${sel.value}" th:text="${sel.text}"></option>
                 </div>
@@ -109,7 +109,7 @@
         maximumSelectionLength: 10,
         placeholder: {
             id: '-1',
-            text: 'Вводите название ВУЗа'
+            text: 'Поиск ВУЗа'
         }
     });
 });

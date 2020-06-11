@@ -9,7 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.shmakovofficial.perpod.entities.*;
+import ru.shmakovofficial.perpod.entities.Employer;
+import ru.shmakovofficial.perpod.entities.Review;
+import ru.shmakovofficial.perpod.entities.Teacher;
+import ru.shmakovofficial.perpod.repositories.EmployerRepository;
+import ru.shmakovofficial.perpod.repositories.ReviewRepository;
+import ru.shmakovofficial.perpod.repositories.TeacherRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +36,7 @@ public class AlbumController {
     @GetMapping("/")
     public String getEmployers(Model model, @RequestParam(required = false) Integer pageNum) {
         if (pageNum == null) pageNum = 1;
-        Page<Employer> page = employerRepository.findAllByApprovedTrue(PageRequest.of(pageNum - 1, 9));
+        Page<Employer> page = employerRepository.findAllByApprovedTrueOrderByNameAscCityAsc(PageRequest.of(pageNum - 1, 9));
         List<SelectReturn> selects = employerRepository.findAllByApprovedTrue()
                 .stream()
                 .map(SelectReturn::new)
@@ -48,7 +53,7 @@ public class AlbumController {
         Employer employer = employerRepository.findById(id).orElse(null);
         if (employer == null) return "redirect:/";
         if (pageNum == null) pageNum = 1;
-        Page<Teacher> page = teacherRepository.findAllByEmployersContainingAndApprovedTrue(employer, PageRequest.of(pageNum - 1, 9));
+        Page<Teacher> page = teacherRepository.findAllByEmployersContainingAndApprovedTrueOrderByLastNameAscFirstNameAscMiddleNameAsc(employer, PageRequest.of(pageNum - 1, 9));
         List<SelectReturn> selects = teacherRepository.findAllByEmployersContainingAndApprovedTrue(employer)
                 .stream()
                 .map(SelectReturn::new)
@@ -66,7 +71,7 @@ public class AlbumController {
         Teacher teacher = teacherRepository.findById(id).orElse(null);
         if (teacher == null) return "redirect:/";
         if (pageNum == null) pageNum = 1;
-        Page<Review> page = reviewRepository.findAllByTeacherAndApprovedTrue(teacher, PageRequest.of(pageNum - 1, 9));
+        Page<Review> page = reviewRepository.findAllByTeacherAndApprovedTrueOrderByReviewDateDesc(teacher, PageRequest.of(pageNum - 1, 9));
         List<Review> reviews = page.getContent();
         List<String> badges = reviews
                 .stream()

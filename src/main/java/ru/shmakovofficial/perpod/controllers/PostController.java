@@ -4,7 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.shmakovofficial.perpod.entities.*;
+import ru.shmakovofficial.perpod.entities.Employer;
+import ru.shmakovofficial.perpod.entities.Mark;
+import ru.shmakovofficial.perpod.entities.Review;
+import ru.shmakovofficial.perpod.entities.Teacher;
+import ru.shmakovofficial.perpod.repositories.EmployerRepository;
+import ru.shmakovofficial.perpod.repositories.ReviewRepository;
+import ru.shmakovofficial.perpod.repositories.TeacherRepository;
 
 import java.util.Date;
 import java.util.Optional;

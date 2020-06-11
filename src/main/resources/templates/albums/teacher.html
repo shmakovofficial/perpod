@@ -36,8 +36,7 @@
                     <form class="needs-validation" th:action="${'/teacher/'+teacher.id+'/add'}" method="post">
                         <div class="col-lg mb-3">
                             <label for="text">Текст</label>
-                            <textarea type="text" class="form-control" id="text" name="text"
-                                      placeholder="Тело отзыва"></textarea>
+                            <textarea type="text" class="form-control" id="text" name="text"></textarea>
                         </div>
                         <div class="row">
                             <div class="col-md mb-3">
@@ -47,7 +46,7 @@
                                        required>
                             </div>
                             <div class="col-md mb-3">
-                                <label for="mark">Оценка</label>
+                                <label for="mark">Оцените преподавателя</label>
                                 <select class="form-control" id="mark" name="mark">
                                     <option>1</option>
                                     <option>2</option>
@@ -84,6 +83,7 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <small th:text="'Опубликовано: ' + ${r.reviewDate}" class="text-muted"></small>
+                            <small th:text="'Предмет: ' + ${r.course}" class="text-muted"></small>
                         </div>
                     </div>
                 </div>
