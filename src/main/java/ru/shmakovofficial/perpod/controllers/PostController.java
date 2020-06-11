@@ -19,13 +19,17 @@ import java.util.Optional;
 public class PostController {
 
     @Autowired
-    private TeacherRepository teacherRepository;
+    public PostController(TeacherRepository teacherRepository, EmployerRepository employerRepository, ReviewRepository reviewRepository) {
+        this.teacherRepository = teacherRepository;
+        this.employerRepository = employerRepository;
+        this.reviewRepository = reviewRepository;
+    }
 
-    @Autowired
-    private EmployerRepository employerRepository;
+    private final TeacherRepository teacherRepository;
 
-    @Autowired
-    private ReviewRepository reviewRepository;
+    private final EmployerRepository employerRepository;
+
+    private final ReviewRepository reviewRepository;
 
     @PostMapping("/add")
     public String addEmployer(

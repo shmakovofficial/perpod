@@ -21,8 +21,4 @@ public class GetController {
         return "failure";
     }
 
-    @GetMapping("/add-employer")
-    public String getAddEmployer() {
-        return "add-employer";
-    }
 }

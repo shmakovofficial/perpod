@@ -25,13 +25,17 @@ import java.util.stream.IntStream;
 public class AlbumController {
 
     @Autowired
-    private TeacherRepository teacherRepository;
+    public AlbumController(TeacherRepository teacherRepository, EmployerRepository employerRepository, ReviewRepository reviewRepository) {
+        this.teacherRepository = teacherRepository;
+        this.employerRepository = employerRepository;
+        this.reviewRepository = reviewRepository;
+    }
 
-    @Autowired
-    private EmployerRepository employerRepository;
+    private final TeacherRepository teacherRepository;
 
-    @Autowired
-    private ReviewRepository reviewRepository;
+    private final EmployerRepository employerRepository;
+
+    private final ReviewRepository reviewRepository;
 
     @GetMapping("/")
     public String getEmployers(Model model, @RequestParam(required = false) Integer pageNum) {

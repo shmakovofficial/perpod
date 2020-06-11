@@ -4,8 +4,8 @@ import ru.shmakovofficial.perpod.entities.Employer;
 import ru.shmakovofficial.perpod.entities.Teacher;
 
 class SelectReturn {
-    public Long value;
-    public String text;
+    public final Long value;
+    public final String text;
 
     public SelectReturn(Employer e) {
         value = e.getId();
