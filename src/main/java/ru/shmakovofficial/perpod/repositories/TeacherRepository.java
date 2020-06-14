@@ -13,4 +13,5 @@ public interface TeacherRepository extends PagingAndSortingRepository<Teacher, L
 
     Page<Teacher> findAllByEmployersContainingAndApprovedTrueOrderByLastNameAscFirstNameAscMiddleNameAsc(Employer e, Pageable p);
     List<Teacher> findAllByEmployersContainingAndApprovedTrue(Employer e);
+
 }
