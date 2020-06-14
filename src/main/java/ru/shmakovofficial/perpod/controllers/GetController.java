@@ -18,7 +18,7 @@ public class GetController {
 
     @GetMapping("/failure")
     public String getFailure() {
-        return "failure";
+        return "error";
     }
 
 }
